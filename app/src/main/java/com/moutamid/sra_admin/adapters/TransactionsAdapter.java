@@ -12,6 +12,7 @@ import androidx.cardview.widget.CardView;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.google.android.material.card.MaterialCardView;
+import com.moutamid.sra_admin.DepositRequestActivity;
 import com.moutamid.sra_admin.R;
 import com.moutamid.sra_admin.WithdrawRequestActivity;
 import com.moutamid.sra_admin.models.RequestModel;
@@ -56,7 +57,7 @@ public class TransactionsAdapter extends RecyclerView.Adapter<TransactionsAdapte
                 o.putExtra("model", model);
                 context.startActivity(o);
             } else {
-                Intent i = new Intent(context, WithdrawRequestActivity.class);
+                Intent i = new Intent(context, DepositRequestActivity.class);
                 i.putExtra("model", model);
                 context.startActivity(i);
             }
