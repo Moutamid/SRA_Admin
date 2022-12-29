@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <color name="primary_color">#5c4db1</color>
+    <color name="secondary_color">#fc801c</color>
+    <color name="black">#FF000000</color>
+    <color name="white">#FFFFFFFF</color>
+    <color name="transparent">#00000000</color>
+    <color name="link_color">#2699fb</color>
+    <color name="layout_bg">#f8f9fb</color>
+    <color name="border_color">#eef0f5</color>
+    <color name="disabled_color">#eef0f5</color>
+    <color name="placeholder_color">#c5c8d2</color>
+    <color name="content_bg_color">#f8f9fb</color>
+    <color name="vip_level">#f8f9fb</color>
+    <color name="line_color">#f5f7fc</color>
+    <color name="head_bg">#f0f0f0</color>
+    <color name="vip_bg">#f8b33d</color>
+    <color name="promote_bg">#a65cab</color>
+    <color name="instruction_bg">#48509e</color>
+    <color name="about_us_bg">#56a585</color>
+    <color name="promotion_bg">#48509e</color>
+    <color name="invite_bg">#56a585</color>
+    <color name="withdraw_bg">#f8b33d</color>
+    <color name="deposit_bg">#a65cab</color>red
+    <color name="card_bg">#C3C1C1</color>
+    <color name="red">#EC1919</color>
+</resources>
