@@ -1,6 +1,7 @@
 package com.moutamid.sra_admin.adapters;
 
 import android.content.Context;
+import android.content.Intent;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -12,6 +13,7 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.google.android.material.card.MaterialCardView;
 import com.moutamid.sra_admin.R;
+import com.moutamid.sra_admin.WithdrawRequestActivity;
 import com.moutamid.sra_admin.models.RequestModel;
 
 import java.text.SimpleDateFormat;
@@ -41,20 +43,25 @@ public class TransactionsAdapter extends RecyclerView.Adapter<TransactionsAdapte
         } else {
             holder.name.setText("Withdraw Request");
         }
-        if (model.getStatus().equals("PEN")){
-            holder.card.setCardBackgroundColor(context.getResources().getColor(R.color.secondary_color));
-            holder.status.setText("Pending");
-        } else if (model.getStatus().equals("COM")){
-            holder.card.setCardBackgroundColor(context.getResources().getColor(R.color.primary_color));
-            holder.status.setText("Completed");
-        } else {
-            holder.card.setCardBackgroundColor(context.getResources().getColor(R.color.red));
-            holder.status.setText("Canceled");
-        }
+        holder.card.setCardBackgroundColor(context.getResources().getColor(R.color.secondary_color));
+        holder.status.setText("Pending");
         holder.amount.setText("Amount : $" + model.getAmount());
         SimpleDateFormat format = new SimpleDateFormat("dd/MM/yyyy, hh:mm aa");
         String date = format.format(model.getTimestamps());
         holder.time.setText("Date/Time : " + date);
+
+        holder.itemView.setOnClickListener(v -> {
+            if (model.getType().equals("WITH")){
+                Intent o = new Intent(context, WithdrawRequestActivity.class);
+                o.putExtra("model", model);
+                context.startActivity(o);
+            } else {
+                Intent i = new Intent(context, WithdrawRequestActivity.class);
+                i.putExtra("model", model);
+                context.startActivity(i);
+            }
+        });
+
     }
 
     @Override

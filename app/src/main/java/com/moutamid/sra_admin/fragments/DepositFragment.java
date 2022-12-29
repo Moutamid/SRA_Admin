@@ -1,16 +1,37 @@
 package com.moutamid.sra_admin.fragments;
 
+import android.content.Context;
+import android.os.Build;
 import android.os.Bundle;
 
+import androidx.annotation.NonNull;
+import androidx.annotation.RequiresApi;
 import androidx.fragment.app.Fragment;
+import androidx.recyclerview.widget.LinearLayoutManager;
 
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
+import com.google.firebase.database.ValueEventListener;
+import com.moutamid.sra_admin.Constants;
 import com.moutamid.sra_admin.R;
+import com.moutamid.sra_admin.adapters.TransactionsAdapter;
+import com.moutamid.sra_admin.databinding.FragmentDepositBinding;
+import com.moutamid.sra_admin.models.RequestModel;
+
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.Comparator;
 
 public class DepositFragment extends Fragment {
+
+    FragmentDepositBinding binding;
+    Context context;
+    TransactionsAdapter adapter;
+    ArrayList<RequestModel> list;
 
     public DepositFragment() {
         // Required empty public constructor
@@ -18,7 +39,42 @@ public class DepositFragment extends Fragment {
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-        // Inflate the layout for this fragment
-        return inflater.inflate(R.layout.fragment_deposit, container, false);
+        binding = FragmentDepositBinding.inflate(inflater, container, false);
+        View view = binding.getRoot();
+        context = view.getContext();
+
+        list = new ArrayList<>();
+
+        binding.recycler.setLayoutManager(new LinearLayoutManager(context));
+        binding.recycler.setHasFixedSize(false);
+
+        Constants.databaseReference().child("Request").addValueEventListener(new ValueEventListener() {
+            @RequiresApi(api = Build.VERSION_CODES.N)
+            @Override
+            public void onDataChange(@NonNull DataSnapshot snapshot) {
+                if (snapshot.exists()){
+                    list.clear();
+                    for (DataSnapshot dataSnapshot : snapshot.getChildren()){
+                        for (DataSnapshot ds : dataSnapshot.getChildren()){
+                            RequestModel model = ds.getValue(RequestModel.class);
+                            if (model.getType().equals("DEP") && model.getStatus().equals("PEN")){
+                                list.add(model);
+                            }
+                            Collections.sort(list, Comparator.comparing(RequestModel::getTimestamps));
+                            Collections.reverse(list);
+                            adapter = new TransactionsAdapter(context, list);
+                            binding.recycler.setAdapter(adapter);
+                        }
+                    }
+                }
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError error) {
+
+            }
+        });
+
+        return view;
     }
 }

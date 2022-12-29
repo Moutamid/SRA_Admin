@@ -1,6 +1,8 @@
 package com.moutamid.sra_admin.models;
 
-public class RequestModel {
+import java.io.Serializable;
+
+public class RequestModel implements Serializable {
     String ID, image, userID, hashKey;
     int amount;
     long timestamps;
