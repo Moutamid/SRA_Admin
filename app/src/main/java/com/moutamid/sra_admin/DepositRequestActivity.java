@@ -5,7 +5,12 @@ import androidx.appcompat.app.AppCompatActivity;
 import android.app.Dialog;
 import android.app.ProgressDialog;
 import android.content.Intent;
+import android.graphics.Color;
+import android.graphics.drawable.ColorDrawable;
 import android.os.Bundle;
+import android.os.Handler;
+import android.view.Gravity;
+import android.view.ViewGroup;
 import android.view.Window;
 import android.widget.ImageView;
 import android.widget.TextView;
@@ -16,6 +21,7 @@ import com.moutamid.sra_admin.databinding.ActivityDepositRequestBinding;
 import com.moutamid.sra_admin.models.RequestModel;
 import com.moutamid.sra_admin.models.UserModel;
 
+import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -38,7 +44,6 @@ public class DepositRequestActivity extends AppCompatActivity {
         model = (RequestModel) getIntent().getSerializableExtra("model");
 
         binding.requestedAmount.setText("$"+model.getAmount());
-        binding.hashKey.setText(model.getHashKey());
         binding.userID.setText(model.getUserID());
 
         Constants.databaseReference().child("users").child(model.getUserID()).get()
@@ -59,8 +64,10 @@ public class DepositRequestActivity extends AppCompatActivity {
 
         binding.declined.setOnClickListener(v -> {
             progressDialog.show();
+            Date date = new Date();
             Map<String, Object> map = new HashMap<>();
             map.put("status", "CAN");
+            map.put("timestamps", date.getTime());
             Constants.databaseReference().child("Request").child(model.getUserID()).child(model.getID())
                     .updateChildren(map).addOnSuccessListener(unused -> {
                         Toast.makeText(getApplicationContext(), "Request Declined", Toast.LENGTH_SHORT).show();
@@ -75,11 +82,13 @@ public class DepositRequestActivity extends AppCompatActivity {
 
         binding.approved.setOnClickListener(v -> {
             progressDialog.show();
+            Date date = new Date();
             int current = Integer.parseInt(binding.userAmount.getText().toString().substring(1));
             Map<String, Object> map = new HashMap<>();
             map.put("assets", current+model.getAmount());
             Map<String, Object> status = new HashMap<>();
             status.put("status", "COM");
+            status.put("timestamps", date.getTime());
             Constants.databaseReference().child("users").child(model.getUserID())
                     .updateChildren(map).addOnSuccessListener(unused -> {
                         Constants.databaseReference().child("Request").child(model.getUserID()).child(model.getID())
@@ -116,5 +125,8 @@ public class DepositRequestActivity extends AppCompatActivity {
         });
 
         dialog.show();
+        dialog.getWindow().setLayout(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.MATCH_PARENT);
+        dialog.getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
+        dialog.getWindow().setGravity(Gravity.CENTER);
     }
 }

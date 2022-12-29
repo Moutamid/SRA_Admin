@@ -14,6 +14,7 @@ import com.moutamid.sra_admin.databinding.ActivityWithdrawRequestBinding;
 import com.moutamid.sra_admin.models.RequestModel;
 import com.moutamid.sra_admin.models.UserModel;
 
+import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -59,8 +60,10 @@ public class WithdrawRequestActivity extends AppCompatActivity {
 
         binding.declined.setOnClickListener(v -> {
             progressDialog.show();
+            Date date = new Date();
             Map<String, Object> map = new HashMap<>();
             map.put("status", "CAN");
+            map.put("timestamps", date.getTime());
             Constants.databaseReference().child("Request").child(model.getUserID()).child(model.getID())
                     .updateChildren(map).addOnSuccessListener(unused -> {
                         Toast.makeText(getApplicationContext(), "Request Declined", Toast.LENGTH_SHORT).show();
@@ -75,11 +78,13 @@ public class WithdrawRequestActivity extends AppCompatActivity {
 
         binding.approved.setOnClickListener(v -> {
             progressDialog.show();
+            Date date = new Date();
             int current = Integer.parseInt(binding.userAmount.getText().toString().substring(1));
             Map<String, Object> map = new HashMap<>();
             map.put("assets", current-model.getAmount());
             Map<String, Object> status = new HashMap<>();
             status.put("status", "COM");
+            status.put("timestamps", date.getTime());
             Constants.databaseReference().child("users").child(model.getUserID())
                     .updateChildren(map).addOnSuccessListener(unused -> {
                         Constants.databaseReference().child("Request").child(model.getUserID()).child(model.getID())

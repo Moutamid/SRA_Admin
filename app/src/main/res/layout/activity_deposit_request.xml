@@ -150,7 +150,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:padding="12dp"
-                android:text="Proof ScreenShot"
+                android:text="Proof ScreenShot (It may take some time to load image please wait)"
                 android:textSize="18sp"
                 android:layout_marginTop="25dp"
                 android:textColor="@color/black"
@@ -180,7 +180,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:padding="12dp"
-                android:text="Only approve request after you send the money"
+                android:text="Only approve request if you receive the money"
                 android:textColor="@color/secondary_color"
                 android:layout_below="@id/layout"/>
 

@@ -58,7 +58,7 @@ public class TransactionsAdapter extends RecyclerView.Adapter<TransactionsAdapte
                 context.startActivity(o);
             } else {
                 Intent i = new Intent(context, DepositRequestActivity.class);
-                i.putExtra("model", model);
+                i.putExtra("model", list.get(holder.getAdapterPosition()));
                 context.startActivity(i);
             }
         });
