@@ -44,8 +44,17 @@ public class TransactionsAdapter extends RecyclerView.Adapter<TransactionsAdapte
         } else {
             holder.name.setText("Withdraw Request");
         }
-        holder.card.setCardBackgroundColor(context.getResources().getColor(R.color.secondary_color));
-        holder.status.setText("Pending");
+
+        if (model.getStatus().equals("PEN")){
+            holder.card.setCardBackgroundColor(context.getResources().getColor(R.color.secondary_color));
+            holder.status.setText("Pending");
+        } else if (model.getStatus().equals("COM")){
+            holder.card.setCardBackgroundColor(context.getResources().getColor(R.color.primary_color));
+            holder.status.setText("Completed");
+        } else {
+            holder.card.setCardBackgroundColor(context.getResources().getColor(R.color.red));
+            holder.status.setText("Canceled");
+        }
         holder.amount.setText("Amount : $" + model.getAmount());
         SimpleDateFormat format = new SimpleDateFormat("dd/MM/yyyy, hh:mm aa");
         String date = format.format(model.getTimestamps());

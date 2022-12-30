@@ -8,6 +8,7 @@ import android.content.ClipboardManager;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
+import android.view.View;
 import android.widget.Toast;
 
 import com.moutamid.sra_admin.databinding.ActivityWithdrawRequestBinding;
@@ -39,6 +40,20 @@ public class WithdrawRequestActivity extends AppCompatActivity {
         binding.requestedAmount.setText("$"+model.getAmount());
         binding.hashKey.setText(model.getHashKey());
         binding.userID.setText(model.getUserID());
+
+        if (model.getStatus().equals("PEN")){
+            binding.statusCard.setCardBackgroundColor(getResources().getColor(R.color.secondary_color));
+            binding.status.setText("Pending");
+            binding.buttonLayout.setVisibility(View.VISIBLE);
+        } else if (model.getStatus().equals("COM")){
+            binding.statusCard.setCardBackgroundColor(getResources().getColor(R.color.primary_color));
+            binding.status.setText("Completed");
+            binding.buttonLayout.setVisibility(View.GONE);
+        } else {
+            binding.statusCard.setCardBackgroundColor(getResources().getColor(R.color.red));
+            binding.status.setText("Canceled");
+            binding.buttonLayout.setVisibility(View.GONE);
+        }
 
         Constants.databaseReference().child("users").child(model.getUserID()).get()
                 .addOnSuccessListener(dataSnapshot -> {
