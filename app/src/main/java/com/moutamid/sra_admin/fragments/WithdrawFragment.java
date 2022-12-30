@@ -57,7 +57,7 @@ public class WithdrawFragment extends Fragment {
                     for (DataSnapshot dataSnapshot : snapshot.getChildren()){
                         for (DataSnapshot ds : dataSnapshot.getChildren()){
                             RequestModel model = ds.getValue(RequestModel.class);
-                            if (model.getType().equals("WITH") && model.getStatus().equals("PEN")){
+                            if (model.getType().equals("WITH")){
                                 list.add(model);
                             }
                             Collections.sort(list, Comparator.comparing(RequestModel::getTimestamps));
