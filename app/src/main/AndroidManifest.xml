@@ -13,6 +13,9 @@
         android:theme="@style/Theme.SRA_Admin"
         tools:targetApi="31">
         <activity
+            android:name=".EditRulesActivity"
+            android:exported="false" />
+        <activity
             android:name=".DepositRequestActivity"
             android:exported="false">
             <meta-data

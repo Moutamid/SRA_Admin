@@ -9,6 +9,7 @@ import androidx.fragment.app.FragmentManager;
 import androidx.fragment.app.FragmentPagerAdapter;
 import androidx.viewpager.widget.ViewPager;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.widget.Toast;
 
@@ -30,6 +31,10 @@ public class MainActivity extends AppCompatActivity {
 
         viewPagerAdapter = new ViewPagerAdapter(getSupportFragmentManager());
         binding.viewpager.setAdapter(viewPagerAdapter);
+
+        binding.edit.setOnClickListener(v -> {
+            startActivity(new Intent(this, EditRulesActivity.class));
+        });
 
         binding.tablayout.setupWithViewPager(binding.viewpager);
 
