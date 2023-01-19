@@ -66,8 +66,12 @@ public class DepositRequestActivity extends AppCompatActivity {
                     progressDialog.dismiss();
                     UserModel user = dataSnapshot.getValue(UserModel.class);
                     binding.username.setText(user.getUsername());
-                    binding.userAmount.setText("$"+user.getAssets());
-
+                    String s = String.format("%.2f", user.getDeposit());
+                    binding.userAmount.setText("$"+s);
+                    float current = Float.parseFloat(binding.userAmount.getText().toString().substring(1));
+                    String ss = String.format("%.2f", (current + model.getAmount()));
+                    float t = Float.parseFloat(ss);
+                    Toast.makeText(this, ""+t, Toast.LENGTH_SHORT).show();
                 }).addOnFailureListener(e -> {
                     Toast.makeText(this, e.getMessage(), Toast.LENGTH_SHORT).show();
                     progressDialog.dismiss();
@@ -76,6 +80,8 @@ public class DepositRequestActivity extends AppCompatActivity {
         binding.hashKey.setOnClickListener(v -> {
             showDialog();
         });
+
+
 
         binding.declined.setOnClickListener(v -> {
             progressDialog.show();
@@ -98,9 +104,13 @@ public class DepositRequestActivity extends AppCompatActivity {
         binding.approved.setOnClickListener(v -> {
             progressDialog.show();
             Date date = new Date();
-            int current = Integer.parseInt(binding.userAmount.getText().toString().substring(1));
+            float current = Float.parseFloat(binding.userAmount.getText().toString().substring(1));
+            //Toast.makeText(this, ""+current, Toast.LENGTH_SHORT).show();
             Map<String, Object> map = new HashMap<>();
-            map.put("assets", current+model.getAmount());
+            //Toast.makeText(this, ""+current+"  "+model.getAmount(), Toast.LENGTH_SHORT).show();
+            String s = String.format("%.2f", (current + model.getAmount()));
+            float t = Float.parseFloat(s);
+            map.put("deposit", t);
             Map<String, Object> status = new HashMap<>();
             status.put("status", "COM");
             status.put("timestamps", date.getTime());
