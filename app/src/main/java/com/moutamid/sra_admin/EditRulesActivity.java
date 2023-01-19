@@ -23,6 +23,14 @@ public class EditRulesActivity extends AppCompatActivity {
             finish();
         });
 
+        Constants.databaseReference().child("rules").get().addOnSuccessListener(dataSnapshot -> {
+            String s = dataSnapshot.child("rules").getValue().toString();
+            binding.rules.setText(s);
+        }).addOnFailureListener(e -> {
+            Toast.makeText(this, e.getMessage(), Toast.LENGTH_SHORT).show();
+        });
+
+
         binding.save.setOnClickListener(v -> {
             Map<String, Object> map= new HashMap<>();
             map.put("rules", binding.rules.getText().toString());
