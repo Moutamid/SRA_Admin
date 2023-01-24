@@ -42,6 +42,12 @@ public class WithdrawRequestActivity extends AppCompatActivity {
         binding.userID.setText(model.getUserID());
 
         if (model.getStatus().equals("PEN")){
+            binding.buttonLayout.setVisibility(View.VISIBLE);
+        } else {
+            binding.buttonLayout.setVisibility(View.GONE);
+        }
+
+        if (model.getStatus().equals("PEN")){
             binding.statusCard.setCardBackgroundColor(getResources().getColor(R.color.secondary_color));
             binding.status.setText("Pending");
             binding.buttonLayout.setVisibility(View.VISIBLE);

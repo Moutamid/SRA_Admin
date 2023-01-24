@@ -14,6 +14,7 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.google.android.material.card.MaterialCardView;
 import com.moutamid.sra_admin.DepositRequestActivity;
 import com.moutamid.sra_admin.R;
+import com.moutamid.sra_admin.TaskActivity;
 import com.moutamid.sra_admin.WithdrawRequestActivity;
 import com.moutamid.sra_admin.models.RequestModel;
 
@@ -68,7 +69,9 @@ public class TransactionsAdapter extends RecyclerView.Adapter<TransactionsAdapte
                 o.putExtra("model", model);
                 context.startActivity(o);
             } else if (model.getType().equals("TASK")){
-
+                Intent o = new Intent(context, TaskActivity.class);
+                o.putExtra("model", model);
+                context.startActivity(o);
             } else {
                 Intent i = new Intent(context, DepositRequestActivity.class);
                 i.putExtra("model", list.get(holder.getAdapterPosition()));

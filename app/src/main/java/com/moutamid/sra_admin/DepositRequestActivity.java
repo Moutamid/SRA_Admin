@@ -48,6 +48,12 @@ public class DepositRequestActivity extends AppCompatActivity {
         binding.userID.setText(model.getUserID());
 
         if (model.getStatus().equals("PEN")){
+            binding.buttonLayout.setVisibility(View.VISIBLE);
+        } else {
+            binding.buttonLayout.setVisibility(View.GONE);
+        }
+
+        if (model.getStatus().equals("PEN")){
             binding.statusCard.setCardBackgroundColor(getResources().getColor(R.color.secondary_color));
             binding.status.setText("Pending");
             binding.buttonLayout.setVisibility(View.VISIBLE);
@@ -71,7 +77,7 @@ public class DepositRequestActivity extends AppCompatActivity {
                     float current = Float.parseFloat(binding.userAmount.getText().toString().substring(1));
                     String ss = String.format("%.2f", (current + model.getAmount()));
                     float t = Float.parseFloat(ss);
-                    Toast.makeText(this, ""+t, Toast.LENGTH_SHORT).show();
+                    //Toast.makeText(this, ""+t, Toast.LENGTH_SHORT).show();
                 }).addOnFailureListener(e -> {
                     Toast.makeText(this, e.getMessage(), Toast.LENGTH_SHORT).show();
                     progressDialog.dismiss();
