@@ -3,6 +3,7 @@ package com.moutamid.sra_admin;
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.app.ProgressDialog;
+import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.Toast;
@@ -10,6 +11,10 @@ import android.widget.Toast;
 import com.moutamid.sra_admin.databinding.ActivityTaskBinding;
 import com.moutamid.sra_admin.models.RequestModel;
 import com.moutamid.sra_admin.models.UserModel;
+
+import java.util.Date;
+import java.util.HashMap;
+import java.util.Map;
 
 public class TaskActivity extends AppCompatActivity {
     ActivityTaskBinding binding;
@@ -68,6 +73,63 @@ public class TaskActivity extends AppCompatActivity {
                     Toast.makeText(this, e.getMessage(), Toast.LENGTH_SHORT).show();
                     progressDialog.dismiss();
                 });
+
+        binding.declined.setOnClickListener(v -> {
+            progressDialog.show();
+            Date date = new Date();
+            Map<String, Object> map = new HashMap<>();
+            map.put("status", "CAN");
+            map.put("timestamps", date.getTime());
+            Constants.databaseReference().child("Request").child(model.getUserID()).child(model.getID())
+                    .updateChildren(map).addOnSuccessListener(unused -> {
+                        Toast.makeText(getApplicationContext(), "Request Declined", Toast.LENGTH_SHORT).show();
+                        progressDialog.dismiss();
+                        startActivity(new Intent(TaskActivity.this, MainActivity.class));
+                        finish();
+                    }).addOnFailureListener(e -> {
+                        progressDialog.dismiss();
+                        Toast.makeText(this, e.getMessage(), Toast.LENGTH_SHORT).show();
+                    });
+        });
+
+        binding.approved.setOnClickListener(v -> {
+            progressDialog.show();
+            Date date = new Date();
+            float current = Float.parseFloat(binding.userAmount.getText().toString().substring(1));
+            //Toast.makeText(this, ""+current, Toast.LENGTH_SHORT).show();
+            Map<String, Object> map = new HashMap<>();
+            //Toast.makeText(this, ""+current+"  "+model.getAmount(), Toast.LENGTH_SHORT).show();
+            String s = String.format("%.2f", (current - model.getAmount()));
+            float t = Float.parseFloat(s);
+            map.put("deposit", t);
+            Map<String, Object> status = new HashMap<>();
+            status.put("status", "COM");
+            status.put("timestamps", date.getTime());
+            Map<String, Object> task = new HashMap<>();
+            task.put("lock", false);
+            Constants.databaseReference().child("users").child(model.getUserID())
+                    .updateChildren(map).addOnSuccessListener(unused -> {
+                        Constants.databaseReference().child("userTasks").child(model.getUserID()).child(model.getUid())
+                                        .updateChildren(task).addOnSuccessListener(unused1 -> {
+                                    Constants.databaseReference().child("Request").child(model.getUserID()).child(model.getID())
+                                            .updateChildren(status).addOnSuccessListener(unused2 -> {
+                                                Toast.makeText(getApplicationContext(), "Request Approved", Toast.LENGTH_SHORT).show();
+                                                progressDialog.dismiss();
+                                                startActivity(new Intent(TaskActivity.this, MainActivity.class));
+                                                finish();
+                                            }).addOnFailureListener(e -> {
+                                                progressDialog.dismiss();
+                                                Toast.makeText(this, e.getMessage(), Toast.LENGTH_SHORT).show();
+                                            });
+                                }).addOnFailureListener(e -> {
+                                    progressDialog.dismiss();
+                                    Toast.makeText(this, e.getMessage(), Toast.LENGTH_SHORT).show();
+                                });
+                    }).addOnFailureListener(e -> {
+                        progressDialog.dismiss();
+                        Toast.makeText(this, e.getMessage(), Toast.LENGTH_SHORT).show();
+                    });
+        });
 
 
     }

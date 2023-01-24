@@ -15,37 +15,6 @@ public class RequestModel implements Serializable {
     public RequestModel() {
     }
 
-    public RequestModel(String ID, String image, String userID, String hashKey, float amount, long timestamps, String status, String type) {
-        this.ID = ID;
-        this.image = image;
-        this.userID = userID;
-        this.hashKey = hashKey;
-        this.amount = amount;
-        this.timestamps = timestamps;
-        this.status = status;
-        this.type = type;
-    }
-
-    public RequestModel(String ID, String userID, String hashKey, String status, String type, float amount, long timestamps) {
-        this.ID = ID;
-        this.userID = userID;
-        this.hashKey = hashKey;
-        this.amount = amount;
-        this.timestamps = timestamps;
-        this.status = status;
-        this.type = type;
-    }
-
-    public RequestModel(String ID, String image, String userID, float amount, long timestamps, String status, String type) {
-        this.ID = ID;
-        this.image = image;
-        this.userID = userID;
-        this.amount = amount;
-        this.timestamps = timestamps;
-        this.status = status;
-        this.type = type;
-    }
-
     public String getUid() {
         return uid;
     }
