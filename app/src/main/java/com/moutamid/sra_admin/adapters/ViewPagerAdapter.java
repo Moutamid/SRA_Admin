@@ -7,6 +7,7 @@ import androidx.fragment.app.FragmentPagerAdapter;
 
 import com.moutamid.sra_admin.fragments.AllFragment;
 import com.moutamid.sra_admin.fragments.DepositFragment;
+import com.moutamid.sra_admin.fragments.TaskFragment;
 import com.moutamid.sra_admin.fragments.WithdrawFragment;
 
 public class ViewPagerAdapter extends FragmentPagerAdapter {
@@ -25,13 +26,15 @@ public class ViewPagerAdapter extends FragmentPagerAdapter {
             fragment = new WithdrawFragment();
         else if (position == 2)
             fragment = new DepositFragment();
+        else if (position == 3)
+            fragment = new TaskFragment();
 
         return fragment;
     }
 
     @Override
     public int getCount() {
-        return 3;
+        return 4;
     }
 
     @Override
@@ -43,6 +46,8 @@ public class ViewPagerAdapter extends FragmentPagerAdapter {
             title = "Withdraw Requests";
         else if (position == 2)
             title = "Deposit Requests";
+        else if (position == 3)
+            title = "Task Requests";
         return title;
     }
 }

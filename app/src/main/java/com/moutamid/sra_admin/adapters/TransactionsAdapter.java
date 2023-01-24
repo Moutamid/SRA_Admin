@@ -41,6 +41,8 @@ public class TransactionsAdapter extends RecyclerView.Adapter<TransactionsAdapte
         RequestModel model = list.get(holder.getAdapterPosition());
         if (model.getType().equals("DEP")){
             holder.name.setText("Deposit Request");
+        } else if (model.getType().equals("TASK")){
+            holder.name.setText("TASK Open Request");
         } else {
             holder.name.setText("Withdraw Request");
         }
@@ -65,6 +67,8 @@ public class TransactionsAdapter extends RecyclerView.Adapter<TransactionsAdapte
                 Intent o = new Intent(context, WithdrawRequestActivity.class);
                 o.putExtra("model", model);
                 context.startActivity(o);
+            } else if (model.getType().equals("TASK")){
+
             } else {
                 Intent i = new Intent(context, DepositRequestActivity.class);
                 i.putExtra("model", list.get(holder.getAdapterPosition()));
