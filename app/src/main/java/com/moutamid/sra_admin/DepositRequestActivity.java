@@ -111,6 +111,9 @@ public class DepositRequestActivity extends AppCompatActivity {
             Date date = new Date();
             float current = Float.parseFloat(binding.userAmount.getText().toString().substring(1));
             //Toast.makeText(this, ""+current, Toast.LENGTH_SHORT).show();
+            if (!binding.bonus.getText().toString().isEmpty()){
+                current = current + Float.parseFloat(binding.bonus.getText().toString());
+            }
             Map<String, Object> map = new HashMap<>();
             //Toast.makeText(this, ""+current+"  "+model.getAmount(), Toast.LENGTH_SHORT).show();
             String s = String.format("%.2f", (current + model.getAmount()));
