@@ -5,6 +5,8 @@ import android.content.Intent;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Filter;
+import android.widget.Filterable;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
@@ -20,14 +22,17 @@ import com.moutamid.sra_admin.models.RequestModel;
 
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Collection;
 
-public class TransactionsAdapter extends RecyclerView.Adapter<TransactionsAdapter.TransactionVH> {
+public class TransactionsAdapter extends RecyclerView.Adapter<TransactionsAdapter.TransactionVH> implements Filterable {
     Context context;
     ArrayList<RequestModel> list;
+    ArrayList<RequestModel> listAll;
 
     public TransactionsAdapter(Context context, ArrayList<RequestModel> list) {
         this.context = context;
         this.list = list;
+        this.listAll = new ArrayList<>(list);
     }
 
     @NonNull
@@ -85,6 +90,38 @@ public class TransactionsAdapter extends RecyclerView.Adapter<TransactionsAdapte
     public int getItemCount() {
         return list.size();
     }
+
+    @Override
+    public Filter getFilter() {
+        return filter;
+    }
+
+    Filter filter = new Filter() {
+        @Override
+        protected FilterResults performFiltering(CharSequence charSequence) {
+            ArrayList<RequestModel> filterList = new ArrayList<>();
+            if (charSequence.toString().isEmpty()){
+                filterList.addAll(listAll);
+            } else {
+                for (RequestModel listModel : listAll){
+                    if (listModel.getUserID().equals(charSequence.toString())){
+                        filterList.add(listModel);
+                    }
+                }
+            }
+            FilterResults filterResults = new FilterResults();
+            filterResults.values = filterList;
+
+            return filterResults;
+        }
+
+        @Override
+        protected void publishResults(CharSequence charSequence, FilterResults filterResults) {
+            list.clear();
+            list.addAll((Collection<? extends RequestModel>) filterResults.values);
+            notifyDataSetChanged();
+        }
+    };
 
     public class TransactionVH extends RecyclerView.ViewHolder{
         CardView card;

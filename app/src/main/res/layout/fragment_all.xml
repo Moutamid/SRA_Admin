@@ -5,10 +5,30 @@
     android:layout_height="match_parent"
     tools:context=".fragments.AllFragment">
 
-    <androidx.recyclerview.widget.RecyclerView
-        android:id="@+id/recycler"
+    <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        tools:listitem="@layout/transaction_card" />
+        android:orientation="vertical">
+
+        <EditText
+            android:id="@+id/search"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:padding="15sp"
+            android:layout_margin="12sp"
+            android:backgroundTint="@color/white"
+            android:drawableEnd="@drawable/round_search_24"
+            android:background="@drawable/tab_bg"
+            android:hint="Search..." />
+
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/recycler"
+            android:layout_width="match_parent"
+            android:layout_weight="1"
+            android:layout_height="match_parent"
+            tools:listitem="@layout/transaction_card" />
+
+
+    </LinearLayout>
 
 </FrameLayout>
