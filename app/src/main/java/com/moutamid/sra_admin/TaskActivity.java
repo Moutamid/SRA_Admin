@@ -109,13 +109,13 @@ public class TaskActivity extends AppCompatActivity {
 
         binding.approved.setOnClickListener(v -> {
             progressDialog.show();
-            float current = Float.parseFloat(binding.userAmount.getText().toString().substring(1));
+            //float current = Float.parseFloat(binding.userAmount.getText().toString().substring(1));
             //Toast.makeText(this, ""+current, Toast.LENGTH_SHORT).show();
             Map<String, Object> map = new HashMap<>();
             //Toast.makeText(this, ""+current+"  "+model.getAmount(), Toast.LENGTH_SHORT).show();
-            String s = String.format("%.2f", (current - model.getAmount()));
-            float t = Float.parseFloat(s);
-            map.put("deposit", t);
+            // String s = String.format("%.2f", (current - model.getAmount()));
+            //float t = Float.parseFloat(s);
+            map.put("deposit", model.getAmount());
             Constants.databaseReference().child("users").child(model.getUserID())
                     .updateChildren(map).addOnSuccessListener(unused -> {
                         lockAll();
