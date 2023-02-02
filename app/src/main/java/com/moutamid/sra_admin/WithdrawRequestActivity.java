@@ -101,7 +101,7 @@ public class WithdrawRequestActivity extends AppCompatActivity {
         binding.approved.setOnClickListener(v -> {
             progressDialog.show();
             Date date = new Date();
-            int current = Integer.parseInt(binding.userAmount.getText().toString().substring(1));
+            float current = Float.parseFloat(binding.userAmount.getText().toString().substring(1));
             Map<String, Object> map = new HashMap<>();
             map.put("assets", current-model.getAmount());
             Map<String, Object> status = new HashMap<>();
