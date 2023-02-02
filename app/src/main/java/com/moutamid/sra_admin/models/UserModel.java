@@ -2,15 +2,14 @@ package com.moutamid.sra_admin.models;
 
 public class UserModel {
     String ID, username, email, password, whatsapp, referralCode, invitationCode;
-    int vipLevel, assets;
-
-    double earning, deposit, promotionValue;
+    int vipLevel;
+    double assets, earning, deposit, promotionValue;
     boolean isVIP, receivePrice;
 
     public UserModel() {
     }
 
-    public UserModel(String ID, String username, String email, String password, String whatsapp, String invitationCode, int assets, double earning, double deposit, double promotionValue, boolean receivePrice) {
+    public UserModel(String ID, String username, String email, String password, String whatsapp, String invitationCode, double assets, double earning, double deposit, double promotionValue, boolean receivePrice) {
         this.ID = ID;
         this.username = username;
         this.email = email;
@@ -56,11 +55,11 @@ public class UserModel {
         this.receivePrice = receivePrice;
     }
 
-    public int getAssets() {
+    public double getAssets() {
         return assets;
     }
 
-    public void setAssets(int assets) {
+    public void setAssets(double assets) {
         this.assets = assets;
     }
 

@@ -29,6 +29,7 @@ public class DepositRequestActivity extends AppCompatActivity {
     ActivityDepositRequestBinding binding;
     RequestModel model;
     ProgressDialog progressDialog;
+    String promotion;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -71,8 +72,9 @@ public class DepositRequestActivity extends AppCompatActivity {
                     progressDialog.dismiss();
                     UserModel user = dataSnapshot.getValue(UserModel.class);
                     binding.username.setText(user.getUsername());
-                    String s = String.format("%.2f", user.getDeposit());
+                    String s = String.format("%.2f", user.getAssets());
                     binding.userAmount.setText("$"+s);
+                    promotion = String.format("%.2f", user.getPromotionValue());
                     float current = Float.parseFloat(binding.userAmount.getText().toString().substring(1));
                     String ss = String.format("%.2f", (current + model.getAmount()));
                     float t = Float.parseFloat(ss);
@@ -110,15 +112,18 @@ public class DepositRequestActivity extends AppCompatActivity {
             progressDialog.show();
             Date date = new Date();
             float current = Float.parseFloat(binding.userAmount.getText().toString().substring(1));
+            float bonus = 0F;
             //Toast.makeText(this, ""+current, Toast.LENGTH_SHORT).show();
-            if (!binding.bonus.getText().toString().isEmpty()){
+            if (!binding.bonus.getText().toString().isEmpty()) {
                 current = current + Float.parseFloat(binding.bonus.getText().toString());
+                bonus = Float.parseFloat(binding.bonus.getText().toString());
             }
             Map<String, Object> map = new HashMap<>();
             //Toast.makeText(this, ""+current+"  "+model.getAmount(), Toast.LENGTH_SHORT).show();
             String s = String.format("%.2f", (current + model.getAmount()));
             float t = Float.parseFloat(s);
-            map.put("deposit", t);
+            map.put("assets", t);
+            map.put("promotionValue", (bonus + Float.parseFloat(promotion)));
             Map<String, Object> status = new HashMap<>();
             status.put("status", "COM");
             status.put("timestamps", date.getTime());

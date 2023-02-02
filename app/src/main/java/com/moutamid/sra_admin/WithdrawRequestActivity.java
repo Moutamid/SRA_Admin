@@ -66,7 +66,8 @@ public class WithdrawRequestActivity extends AppCompatActivity {
                     progressDialog.dismiss();
                     UserModel user = dataSnapshot.getValue(UserModel.class);
                     binding.username.setText(user.getUsername());
-                    binding.userAmount.setText("$"+user.getAssets());
+                    String s = String.format("%.2f", user.getAssets());
+                    binding.userAmount.setText("$"+s);
 
                 }).addOnFailureListener(e -> {
                     Toast.makeText(this, e.getMessage(), Toast.LENGTH_SHORT).show();
