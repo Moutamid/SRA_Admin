@@ -28,6 +28,7 @@ import java.util.Map;
 public class DepositRequestActivity extends AppCompatActivity {
     ActivityDepositRequestBinding binding;
     RequestModel model;
+    UserModel user;
     ProgressDialog progressDialog;
     String promotion;
 
@@ -70,7 +71,7 @@ public class DepositRequestActivity extends AppCompatActivity {
         Constants.databaseReference().child("users").child(model.getUserID()).get()
                 .addOnSuccessListener(dataSnapshot -> {
                     progressDialog.dismiss();
-                    UserModel user = dataSnapshot.getValue(UserModel.class);
+                    user = dataSnapshot.getValue(UserModel.class);
                     binding.username.setText(user.getUsername());
                     String s = String.format("%.2f", user.getAssets());
                     binding.userAmount.setText("$"+s);
@@ -131,10 +132,7 @@ public class DepositRequestActivity extends AppCompatActivity {
                     .updateChildren(map).addOnSuccessListener(unused -> {
                         Constants.databaseReference().child("Request").child(model.getUserID()).child(model.getID())
                                 .updateChildren(status).addOnSuccessListener(unused1 -> {
-                                    Toast.makeText(getApplicationContext(), "Request Approved", Toast.LENGTH_SHORT).show();
-                                    progressDialog.dismiss();
-                                    startActivity(new Intent(DepositRequestActivity.this, MainActivity.class));
-                                    finish();
+                                    updateReferal(user.getInvitationCode());
                                 }).addOnFailureListener(e -> {
                                     progressDialog.dismiss();
                                     Toast.makeText(this, e.getMessage(), Toast.LENGTH_SHORT).show();
@@ -145,6 +143,54 @@ public class DepositRequestActivity extends AppCompatActivity {
                     });
         });
 
+    }
+
+    private void updateReferal(String invitationCode) {
+        Map<String, Object> update = new HashMap<>();
+        Toast.makeText(this, invitationCode, Toast.LENGTH_SHORT).show();
+        try {
+            Constants.databaseReference().child("users").child(invitationCode)
+                    .get().addOnSuccessListener(dataSnapshot -> {
+                        if (dataSnapshot.exists()) {
+                            UserModel model = dataSnapshot.getValue(UserModel.class);
+                            if (!model.isReceivePrice()){
+                                double assets = 0;
+                                double promotionValue = 0;
+                                try {
+                                    assets = model.getAssets();
+                                    promotionValue = model.getPromotionValue();
+                                } catch (Exception e) {
+                                    e.printStackTrace();
+                                }
+                                update.put("assets", assets + 5);
+                                update.put("receivePrice", true);
+                                update.put("promotionValue", promotionValue + 5);
+                                Constants.databaseReference().child("users").child(invitationCode)
+                                        .updateChildren(update).addOnSuccessListener(unused -> {
+                                            Toast.makeText(getApplicationContext(), "Request Approved", Toast.LENGTH_SHORT).show();
+                                            progressDialog.dismiss();
+                                            startActivity(new Intent(DepositRequestActivity.this, MainActivity.class));
+                                            finish();
+                                        }).addOnFailureListener(e -> {
+                                            Toast.makeText(this, e.getMessage(), Toast.LENGTH_SHORT).show();
+                                            progressDialog.dismiss();
+                                        });
+
+                            } else {
+                                Toast.makeText(getApplicationContext(), "Request Approved", Toast.LENGTH_SHORT).show();
+                                progressDialog.dismiss();
+                                startActivity(new Intent(DepositRequestActivity.this, MainActivity.class));
+                                finish();
+                            }
+                        }
+                    }).addOnFailureListener(e -> {
+                        Toast.makeText(this, e.getMessage(), Toast.LENGTH_SHORT).show();
+                        progressDialog.dismiss();
+                    });
+        } catch (Exception e){
+            progressDialog.dismiss();
+            e.printStackTrace();
+        }
     }
 
     private void showDialog() {
