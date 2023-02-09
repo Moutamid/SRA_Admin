@@ -147,7 +147,6 @@ public class DepositRequestActivity extends AppCompatActivity {
 
     private void updateReferal(String invitationCode) {
         Map<String, Object> update = new HashMap<>();
-        Toast.makeText(this, invitationCode, Toast.LENGTH_SHORT).show();
         try {
             Constants.databaseReference().child("users").child(invitationCode)
                     .get().addOnSuccessListener(dataSnapshot -> {
